@@ -12,22 +12,22 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 import cbs
+import dj_database_url
 
 cbs.DEFAULT_ENV_PREFIX = 'DJANGO_'
+
 
 class BaseSettings:
     # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
     # Quick-start development settings - unsuitable for production
     # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
     # SECURITY WARNING: don't run with debug turned on in production!
-    DEBUG = True
+    DEBUG = False
 
     ALLOWED_HOSTS = []
-
 
     # Application definition
 
@@ -38,6 +38,7 @@ class BaseSettings:
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
+        'core',
     ]
 
     MIDDLEWARE_CLASSES = [
@@ -71,18 +72,6 @@ class BaseSettings:
 
     WSGI_APPLICATION = 'investorservitude.wsgi.application'
 
-
-    # Database
-    # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
-
-
     # Password validation
     # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
@@ -101,7 +90,6 @@ class BaseSettings:
         },
     ]
 
-
     # Internationalization
     # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
@@ -115,13 +103,47 @@ class BaseSettings:
 
     USE_TZ = True
 
-
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
     STATIC_URL = '/static/'
 
     @cbs.env
-    def SECRET(self):
+    def SECRET_KEY(self):
         """Gets its value from os.environ['DJANGO_SECRET']"""
         return 'my-not-so-secret-key'
+
+    @cbs.env
+    def DATABASE_DEFAULT(self):
+        return 'postgres://localhost:5432/investorservitude'
+
+    # Database
+    # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
+
+    @property
+    def DATABASES(self):
+        return {
+            'default': dj_database_url.parse(self.DATABASE_DEFAULT)
+        }
+
+    @cbs.env
+    def INVESTORSERVE_URL(self):
+        return 'https://www.investorserve.com.au'
+
+    @cbs.env
+    def INVESTORSERVE_USERNAME(self):
+        return 'set-this-in-environment'
+
+    @cbs.env
+    def INVESTORSERVE_PASSWORD(self):
+        return 'set-this-in-environment'
+
+
+
+class LocalSettings(BaseSettings):
+    DEBUG = True
+
+
+# Invoke the settings using the DJANGO_MODE environment variable
+MODE = os.environ.get('DJANGO_MODE', 'Local')
+cbs.apply('{}Settings'.format(MODE.title()), globals())

@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Holding
+
+
+@admin.register(Holding)
+class HoldingsAdmin(admin.ModelAdmin):
+    pass
