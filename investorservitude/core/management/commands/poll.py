@@ -110,9 +110,9 @@ class Command(BaseCommand):
             # print(holding_data)
             try:
                 holding = Holding.objects.create(**holding_data)
-                self.stdout.write(self.style.SUCCESS('Created holding {}'.format(holding)))
+                self.stdout.write(self.style.SUCCESS('Created holding entry {}'.format(holding)))
             except IntegrityError as e:
                 self.stdout.write(self.style.ERROR(
-                    'Integrity error when trying to create new holding. Most likely this is '
+                    'Integrity error when trying to create new holding entry. Most likely this is '
                     'because a holding entry for the security/date combination already exists. '
                     'Error recieved: {}'.format(e)))
