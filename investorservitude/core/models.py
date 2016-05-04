@@ -14,6 +14,6 @@ class Holding(models.Model):
     class Meta:
         unique_together = ('security', 'close_price_date')
 
-    def __unicode__(self):
+    def __str__(self):
         return '{}, {}, {} - {}'.format(
             self.security, self.holding, self.close_price, self.close_price_date)
