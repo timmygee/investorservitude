@@ -139,9 +139,14 @@ class BaseSettings:
         return 'set-this-in-environment'
 
 
-
 class LocalSettings(BaseSettings):
     DEBUG = True
+
+    @property
+    def INSTALLED_APPS(self):
+        return super().INSTALLED_APPS + [
+            'django_extensions',
+        ]
 
 
 # Invoke the settings using the DJANGO_MODE environment variable

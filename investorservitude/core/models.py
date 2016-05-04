@@ -10,3 +10,10 @@ class Holding(models.Model):
     close_price = models.DecimalField(decimal_places=4, max_digits=8)
     close_price_date = models.DateField()
     value = models.DecimalField(decimal_places=2, max_digits=10)
+
+    class Meta:
+        unique_together = ('security', 'close_price_date')
+
+    def __unicode__(self):
+        return '{}, {}, {} - {}'.format(
+            self.security, self.holding, self.close_price, self.close_price_date)
