@@ -44,7 +44,7 @@ class PollCommandError(CommandError):
 
 
 class Command(BaseCommand):
-    help = 'Polls InvestorServe for yoru latest holding data'
+    help = 'Polls InvestorServe for your latest holding data'
 
     def handle(self, *args, **options):
         response = requests.get(settings.INVESTORSERVE_URL)
