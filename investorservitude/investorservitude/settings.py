@@ -27,7 +27,7 @@ class BaseSettings:
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = False
 
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ['harvey.jadedraver.club']
 
     # Application definition
 
@@ -107,6 +107,7 @@ class BaseSettings:
     # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
     STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
     @cbs.env
     def SECRET_KEY(self):
@@ -140,7 +141,7 @@ class BaseSettings:
 
 
 class LocalSettings(BaseSettings):
-    DEBUG = True
+    DEBUG = False
 
     @property
     def INSTALLED_APPS(self):
