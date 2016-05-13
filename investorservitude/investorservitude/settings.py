@@ -27,8 +27,6 @@ class BaseSettings:
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = False
 
-    ALLOWED_HOSTS = ['harvey.jadedraver.club']
-
     # Application definition
 
     INSTALLED_APPS = [
@@ -148,6 +146,10 @@ class LocalSettings(BaseSettings):
         return super().INSTALLED_APPS + [
             'django_extensions',
         ]
+
+
+class ProductionSettings(BaseSettings):
+    ALLOWED_HOSTS = ['harvey.jadedraver.club']
 
 
 # Invoke the settings using the DJANGO_MODE environment variable
