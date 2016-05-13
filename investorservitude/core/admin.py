@@ -7,6 +7,7 @@ from .models import Holding
 class HoldingsAdmin(admin.ModelAdmin):
     list_display = (
         'security', 'holding', 'close_price_date', 'close_price',  'value',
-        'issuer', 'subregister', 'reference'
+        'issuer', 'subregister', 'reference', 'created_date'
     )
     list_filter = ('security', 'issuer')
+    exclude = ('created_date',)

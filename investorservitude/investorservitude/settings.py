@@ -141,7 +141,7 @@ class BaseSettings:
 
 
 class LocalSettings(BaseSettings):
-    DEBUG = False
+    DEBUG = True
 
     @property
     def INSTALLED_APPS(self):
