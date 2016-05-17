@@ -16,5 +16,5 @@ class Holding(models.Model):
         unique_together = ('security', 'close_price_date')
 
     def __str__(self):
-        return '{}, {}, {} - {}'.format(
-            self.security, self.holding, self.close_price, self.close_price_date)
+        return '{} - {}, {}, {}'.format(
+            self.holding, self.close_price, self.close_price_date, self.security)
