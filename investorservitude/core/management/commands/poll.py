@@ -76,6 +76,8 @@ class Command(BaseCommand):
                     response.status_code, settings.INVESTORSERVE_URL))
 
         soup = BeautifulSoup(response.content, 'html.parser')
+        # soup = BeautifulSoup(
+        #     open('../www.investorserve.com.au.html', 'r'), 'html.parser')
 
         data_table = soup.find('table', class_='datatable')
 
@@ -109,8 +111,17 @@ class Command(BaseCommand):
 
             # print(holding_data)
             try:
-                holding = Holding.objects.create(**holding_data)
-                self.stdout.write(self.style.SUCCESS('Created holding entry {}'.format(holding)))
+                holding, created = Holding.objects.update_or_create(
+                    security=holding_data['security'],
+                    close_price_date=holding_data['close_price_date'],
+                    defaults=holding_data)
+
+                if created:
+                    self.stdout.write(
+                        self.style.SUCCESS('Created holding entry {}'.format(holding)))
+                else:
+                    self.stdout.write(
+                        self.style.SUCCESS('Updated holding entry {}'.format(holding)))
             except IntegrityError as e:
                 self.stdout.write(self.style.ERROR(
                     'Integrity error when trying to create new holding entry. Most likely this is '

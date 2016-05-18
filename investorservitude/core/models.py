@@ -17,4 +17,4 @@ class Holding(models.Model):
 
     def __str__(self):
         return '{} - {}, {}, {}'.format(
-            self.holding, self.close_price, self.close_price_date, self.security)
+            self.security, self.holding, self.close_price, self.close_price_date)
