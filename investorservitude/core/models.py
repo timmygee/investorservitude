@@ -15,6 +15,8 @@ class Holding(models.Model):
 
     class Meta:
         unique_together = ('security', 'close_price_date')
+        verbose_name = 'holding entry'
+        verbose_name_plural = 'holding entries'
 
     def __str__(self):
         return '{} - {}, {}, {}'.format(
