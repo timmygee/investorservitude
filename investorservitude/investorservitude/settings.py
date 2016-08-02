@@ -37,12 +37,14 @@ class BaseSettings:
         'django.contrib.messages',
         'django.contrib.staticfiles',
         'rest_framework',
+        'corsheaders',
         'core',
     ]
 
     MIDDLEWARE_CLASSES = [
         'django.middleware.security.SecurityMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
+        'corsheaders.middleware.CorsMiddleware',
         'django.middleware.common.CommonMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
         'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -108,6 +110,8 @@ class BaseSettings:
     STATIC_URL = '/static/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+    # django-rest-framework
+
     REST_FRAMEWORK = {
         'DEFAULT_PERMISSION_CLASSES': (
             'rest_framework.permissions.IsAuthenticated',
@@ -116,6 +120,13 @@ class BaseSettings:
     }
 
     LOGIN_REDIRECT_URL = '/api/'
+
+    # django-cors-headers
+
+    CORS_ORIGIN_ALLOW_ALL = False
+    CORS_ORIGIN_WHITELIST = (
+        'localhost:3000',
+    )
 
     @cbs.env
     def SECRET_KEY(self):
