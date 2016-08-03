@@ -1,20 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 
-import API from './api';
-
 
 export default class Chart extends Component {
   constructor() {
     super();
     this.state = {};
-    this.api = new API('tim', 'testings');
 
     this.handleButtonClick = this.handleButtonClick.bind(this);
   }
 
   handleButtonClick(event) {
-    this.api.get('holdings')
-      .then(data => this.setState(data))
   }
 
   render() {

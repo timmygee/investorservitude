@@ -7,6 +7,9 @@
   },
   "dependencies": {
     "base64-js": "^1.1.2",
+    "events": "^1.1.1",
+    "flux": "^2.1.1",
+    "keymirror": "^0.1.1",
     "react": "^15.2.1",
     "react-dom": "^15.2.1"
   },
