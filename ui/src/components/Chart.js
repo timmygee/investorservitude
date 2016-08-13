@@ -1,31 +1,49 @@
 import React, { Component, PropTypes } from 'react';
 
+import actions from '../actions/actions';
+import store from '../store/store';
+
 
 export default class Chart extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = store.getChartStore();
 
     this.handleButtonClick = this.handleButtonClick.bind(this);
+    this.onChange = this.onChange.bind(this);
+  }
+
+  componentDidMount() {
+    store.addChangeListener(this.onChange);
+  }
+
+  componentWillUnmount() {
+    store.removeChangeListener(this.onChange);
+  }
+
+  onChange() {
+    this.setState(store.getChartStore());
   }
 
   handleButtonClick(event) {
+    const filter = {};
+    actions.getHoldings({ filter });
   }
 
   render() {
-    const { items } = this.state;
+    const { holdings } = this.state;
 
     return (
       <div className="chart">
         <button onClick={this.handleButtonClick}>Go</button>
         <p>{ JSON.stringify(this.state) }</p>
-        { 
-          items &&
-          <ul>
-            { items.map(item => <li key={item.key}>{item}</li>) }
-          </ul>
-        }
       </div>
     );
   }
 };
+        // { 
+        //   holdings &&
+        //   <ul>
+        //     { holdings.map(holding => <li key={holding.key}>{holding}</li>) }
+        //   </ul>
+        // }
