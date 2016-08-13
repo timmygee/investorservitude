@@ -41,11 +41,21 @@ export default class API {
 
   get(path='/', headers={}) {
     console.log(this.headersAuth)
-    return fetch(`${this.baseEndpoint}${this.normalisePath(path)}/`, {
+    const url = `${this.baseEndpoint}${this.normalisePath(path)}/`;
+    return fetch(url, {
       method: 'GET',
       redirect: 'follow',
       headers: new Headers(Object.assign({}, headers, this.headersAuth)),
     })
-    .then(response => response.json());
+    .catch(error => {
+      console.error(`Error when GETting ${url}`, error); // eslint-disable-line no-console
+      throw error;
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error ${response.status} (${response.statusText}) when fetching ${url}`);
+      }
+      return response.json();
+    });
   }
 }

@@ -16,7 +16,7 @@ const actions = {
 
     restApi.get('holdings')
       .catch(error => {
-        console.error(error);
+        console.error('getHoldings action error:', error);
         dispatcher.dispatch({
           actionType: ACTION_TYPES.CHART_API_ERROR,
           error: error,
