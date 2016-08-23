@@ -9,3 +9,4 @@ from .models import Holding
 class HoldingViewSet(viewsets.ModelViewSet):
     queryset = Holding.objects.order_by('-created')
     serializer_class = HoldingSerializer
+    pagination_class = None
