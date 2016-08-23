@@ -7,5 +7,5 @@ class HoldingSerializer(serializers.HyperlinkedModelSerializer):
         model = Holding
         fields = (
             'security', 'holding', 'close_price', 'close_price', 'created',
-            'updated'
+            'updated', 'value',
         )

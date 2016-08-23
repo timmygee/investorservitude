@@ -16,11 +16,11 @@ import dispatcher from '../dispatcher/dispatcher';
 import { ACTION_TYPES } from '../constants/constants';
 
 
-const _chartStore = {
-  holdings: {},
-};
-
 const CHANGE_EVENT = 'change';
+
+const securitiesStore = {
+  securities: {},
+};
 
 
 class Store extends EventEmitter {
@@ -33,19 +33,22 @@ class Store extends EventEmitter {
   removeChangeListener(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   }
-  getChartStore() {
-    return _chartStore;
+  getSecuritiesStore() {
+    return securitiesStore;
   }
 }
 
+
 const store = new Store();
+
 
 store.dispatchToken = dispatcher.register(payload => {
   const { actionType } = payload;
 
   switch (actionType) {
-    case ACTION_TYPES.CHART_FETCH_HOLDINGS_RESPONSE:
-      _chartStore.holdings = payload.holdings;
+    case ACTION_TYPES.CHART_FETCH_SECURITIES_RESPONSE:
+      console.log('payload', payload.securities)
+      securitiesStore.securities = payload.securities;
       break;
     default:
       return;
