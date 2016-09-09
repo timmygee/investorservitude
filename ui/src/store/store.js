@@ -19,7 +19,7 @@ import { ACTION_TYPES } from '../constants/constants';
 const CHANGE_EVENT = 'change';
 
 const securitiesStore = {
-  securities: {},
+  securities: [],
 };
 
 
