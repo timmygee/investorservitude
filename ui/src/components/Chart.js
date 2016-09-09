@@ -48,21 +48,6 @@ export default class Chart extends Component {
       axisLabel: 'Value',
     };
 
-    // {
-    //   React.createElement('NVD3Chart', {
-    //     type: 'lineChart',
-    //     datum: securities,
-    //     width: '800',
-    //     height: '600',
-    //     x: 'created',
-    //     y: 'value',
-    //     xAxis: ,
-    //     yAxis: ,
-    //     showXAxis: true,
-    //     showYAxis: true,
-    //   })
-    // }
-
     return (
       <div className="chart">
         <NVD3Chart
