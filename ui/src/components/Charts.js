@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 
-import actions from '../actions/actions';
-import store from '../store/store';
+import ApiActions from '../actions/ApiActions';
 import SecurityLineChart from './SecurityLineChart';
+import SecuritiesStore from '../store/SecuritiesStore';
 
 
 const niceColors = [
@@ -23,45 +23,31 @@ const style = {
 export default class Charts extends Component {
   constructor() {
     super();
-    this.state = store.getSecuritiesStore();
+    this.state = SecuritiesStore.getSecuritiesStore();
 
     this.onChange = this.onChange.bind(this);
   }
 
   componentDidMount() {
+    // filter does nothing currently but here as a placeholder for a possible future feature 
     const filter = {};
-    actions.getSecurities({ filter });
+    ApiActions.getSecurities({ filter });
   }
 
   componentWillMount() {
-    store.addChangeListener(this.onChange);
+    SecuritiesStore.addChangeListener(this.onChange);
   }
 
   componentWillUnmount() {
-    store.removeChangeListener(this.onChange);
+    SecuritiesStore.removeChangeListener(this.onChange);
   }
 
   onChange() {
-    this.setState(store.getSecuritiesStore());
+    this.setState(SecuritiesStore.getSecuritiesStore());
   }
 
   render() {
     const { securities } = this.state;
-
-    // const xAxis = {
-    //   tickFormat(d) {
-    //     console.log(d)
-    //     const format = d3.time.format('%Y-%m-%d');
-    //     console.log(format(new Date(d)));
-    //     return format(new Date(d));
-    //   },
-    //   axisLabel: 'Date',
-    //   rotateLabels: 90,
-    // };
-    // const yAxis = {
-    //   // tickFormat: function(d) {return parseFloat(d).toFixed(2); }
-    //   axisLabel: 'Value',
-    // };
 
     return (
       <div className="charts">
@@ -86,9 +72,3 @@ export default class Charts extends Component {
     );
   }
 };
-        // { 
-        //   holdings &&
-        //   <ul>
-        //     { holdings.map(holding => <li key={holding.key}>{holding}</li>) }
-        //   </ul>
-        // }

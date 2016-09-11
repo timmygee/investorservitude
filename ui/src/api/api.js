@@ -24,17 +24,17 @@ export default class API {
 
   get headersBase() {
     return {
-      Accept: '*/*',
+      Accept: 'application/json, */*',
+      'Content-Type': 'application/json',      
       'Accept-Encoding': 'gzip, deflate',
       Connection: 'keep-alive',
-      Host: this.host,
       'User-Agent': 'HerpdyDerp/0.1',
     }
   }
 
-  get authTokenHeader() {
+  get authTokenHeaders() {
     return this.authToken ? 
-      { Authorization: `Token${this.authToken}` } :
+      { Authorization: `Token ${this.authToken}` } :
       {};
   }
 
@@ -42,13 +42,13 @@ export default class API {
     this.authToken = authToken;
   }
 
-  get(path='/', headers={}) {
-    console.log(this.headersAuth)
+  get(path='/', { headers={} } = {}) {
     const url = `${this.baseEndpoint}${this.normalisePath(path)}/`;
+    console.log(Object.assign({}, this.headersBase, this.authTokenHeaders, headers))
     return fetch(url, {
       method: 'GET',
       redirect: 'follow',
-      headers: new Headers(Object.assign({}, headers, this.authTokenHeader)),
+      headers: Object.assign({}, this.headersBase, this.authTokenHeaders, headers),
     })
     .catch(error => {
       console.error(`Error when GETting ${url}`, error); // eslint-disable-line no-console
@@ -56,7 +56,28 @@ export default class API {
     })
     .then(response => {
       if (!response.ok) {
-        throw new Error(`HTTP error ${response.status} (${response.statusText}) when fetching ${url}`);
+        throw new Error(`API error ${response.status} (${response.statusText})`);
+      }
+      return response.json();
+    });
+  }
+
+  post(path='/', { headers={}, data={} } = {}) {
+    const url = `${this.baseEndpoint}${this.normalisePath(path)}/`;
+    console.log(data)
+    return fetch(url, {
+      method: 'POST',
+      redirect: 'follow',
+      headers: Object.assign({}, this.headersBase, this.authTokenHeaders, headers),
+      body: JSON.stringify(data),
+    })
+    .catch(error => {
+      console.error(`Error when POSTing ${url}`, error); // eslint-disable-line no-console
+      throw error;
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`API error ${response.status} (${response.statusText})`);
       }
       return response.json();
     });
