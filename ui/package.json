@@ -12,6 +12,7 @@
     "flux": "^2.1.1",
     "keymirror": "^0.1.1",
     "moment": "^2.14.1",
+    "rc-slider": "^4.0.1",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
     "recharts": "^0.13.4"
