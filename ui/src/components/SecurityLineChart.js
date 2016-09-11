@@ -11,7 +11,7 @@ const style = {
   },
 };
 
-const formatDate = date => moment(date).format('YYYY-DD-MM');
+const formatDate = date => moment(date).format('YYYY-MM-DD');
 
 const customToolTip = props => {
   console.log(props) 
