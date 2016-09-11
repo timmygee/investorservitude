@@ -4,6 +4,7 @@ import actions from '../actions/actions';
 import store from '../store/store';
 import SecurityLineChart from './SecurityLineChart';
 
+
 const niceColors = [
   '#525564',
   '#74828F',
@@ -13,6 +14,11 @@ const niceColors = [
   '#FEF6EB',
 ];
 
+const style = {
+  chartItem: {
+    marginBottom: '40px',
+  }
+};
 
 export default class Charts extends Component {
   constructor() {
@@ -62,14 +68,16 @@ export default class Charts extends Component {
         {
           securities &&
           securities.map(
-            (security, index) => 
-              <SecurityLineChart
-                key={security.key}
-                syncId="sec-sync"
-                lineColor={niceColors[index]}
-                holdingColor={niceColors[index + 1]}
-                security={security}
-              />
+            (security, index) => (
+              <div key={security.key} style={style.chartItem}>
+                <SecurityLineChart
+                  syncId="sec-sync"
+                  lineColor={niceColors[index]}
+                  holdingColor={niceColors[index + 1]}
+                  security={security}
+                />
+              </div>
+            )
           )
         }
 
