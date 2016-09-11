@@ -1,11 +1,10 @@
 // import { fromByteArray } from 'base64-js';
 
 export default class API {
-  constructor(username, password, host='localhost:8000', baseEndpointPath='/api') {
+  constructor(host='localhost:8000', baseEndpointPath='/api') {
     this.baseEndpoint = `http://${host}${this.normalisePath(baseEndpointPath)}`;
     this.host = host;
-    this.username = username;
-    this.password = password;
+    this.authToken = null;
   }
 
   // Converts a '/' separated path into a consistent format.
@@ -33,10 +32,14 @@ export default class API {
     }
   }
 
-  get headersAuth() {
-    return Object.assign({}, this.headersBase, {
-      Authorization: `Basic ${btoa(`${this.username}:${this.password}`)}`
-    })
+  get authTokenHeader() {
+    return this.authToken ? 
+      { Authorization: `Token${this.authToken}` } :
+      {};
+  }
+
+  setAuthToken(authToken) {
+    this.authToken = authToken;
   }
 
   get(path='/', headers={}) {
@@ -45,7 +48,7 @@ export default class API {
     return fetch(url, {
       method: 'GET',
       redirect: 'follow',
-      headers: new Headers(Object.assign({}, headers, this.headersAuth)),
+      headers: new Headers(Object.assign({}, headers, this.authTokenHeader)),
     })
     .catch(error => {
       console.error(`Error when GETting ${url}`, error); // eslint-disable-line no-console

@@ -50,6 +50,10 @@ store.dispatchToken = dispatcher.register(payload => {
       console.log('payload', payload.securities)
       securitiesStore.securities = payload.securities;
       break;
+    case ACTION_TYPES.FETCH_AUTH_TOKEN_RESPONSE:
+      const { restApi, token } = payload;
+      restApi.setAuthToken(token);
+      return; // Don't emit change. Data store is unchanged by updating auth token
     default:
       return;
   }

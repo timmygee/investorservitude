@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-// import './App.css';
+import LoginForm from './LoginForm';
+import { isLoggedIn } from '../util/auth'
 
 import Charts from './Charts';
 
 class App extends Component {
   render() {
-    return (
-      <Charts />
-    );
+    if (isLoggedIn()) {
+      return <Charts />;
+    }
+
+    return <LoginForm />;
   }
 }
 
