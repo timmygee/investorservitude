@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 import ApiActions from '../actions/ApiActions';
 import SecurityLineChart from './SecurityLineChart';
-import SecuritiesStore from '../store/SecuritiesStore';
+import loginRequired from './LoginRequired';
 
 
 const niceColors = [
@@ -20,34 +20,15 @@ const style = {
   }
 };
 
-export default class Charts extends Component {
-  constructor() {
-    super();
-    this.state = SecuritiesStore.getSecuritiesStore();
-
-    this.onChange = this.onChange.bind(this);
-  }
-
-  componentDidMount() {
-    // filter does nothing currently but here as a placeholder for a possible future feature 
-    const filter = {};
-    ApiActions.getSecurities({ filter });
-  }
-
-  componentWillMount() {
-    SecuritiesStore.addChangeListener(this.onChange);
-  }
-
-  componentWillUnmount() {
-    SecuritiesStore.removeChangeListener(this.onChange);
-  }
-
-  onChange() {
-    this.setState(SecuritiesStore.getSecuritiesStore());
-  }
+class Charts extends Component {
+  // componentDidMount() {
+  //   // filter does nothing currently but here as a placeholder for a possible future feature 
+  //   const filter = {};
+  //   ApiActions.getSecurities({ filter });
+  // }
 
   render() {
-    const { securities } = this.state;
+    const { securities } = this.props;
 
     return (
       <div className="charts">
@@ -72,3 +53,5 @@ export default class Charts extends Component {
     );
   }
 };
+
+export default Charts;

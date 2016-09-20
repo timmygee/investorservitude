@@ -6,37 +6,18 @@ import AuthStore from '../store/AuthStore';
 // A bit hacky because I'm not using controlled components for each input 
 // but this is fine for the current purposes of the app
 export default class LoginForm extends Component {
-  contextTypes: {
-    router: PropTypes.object.isRequired,
-  }
-
   constructor() {
     super();
 
     this.state = {
       username: '',
       password: '',
-      token: null,
-      error: null,
-    }
+    };
 
-    this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.updateStateProp = this.updateStateProp.bind(this);
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
-  }
-
-  componentWillMount() {
-    AuthStore.addChangeListener(this.onChange);
-  }
-
-  componentWillUnmount() {
-    AuthStore.removeChangeListener(this.onChange);
-  }
-
-  onChange() {
-    this.setState(Object.assign({}, this.state, AuthStore.getAuthStore()));
   }
 
   onSubmit(event) {
@@ -46,7 +27,7 @@ export default class LoginForm extends Component {
     if (!(username && password)) {
       this.updateStateProp('error', new Error('Please enter a username and password'));
     } else {
-      ApiActions.getAuthToken(username, password)
+      ApiActions.getAuthToken(username, password);
     }
   }
 
@@ -65,7 +46,8 @@ export default class LoginForm extends Component {
   }
 
   render() {
-    const { username, password, token, error } = this.state;
+    const { loggedIn, error } = this.props;
+    const { username, password } = this.state;
 
     return (
       <form className="login-box">
