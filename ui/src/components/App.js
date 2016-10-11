@@ -26,31 +26,12 @@ class App extends Component {
 
   constructor() {
     super();
-    this.state = Object.assign(
-      {}, AuthStore.getAuthStore(), SecuritiesStore.getSecuritiesStore());
 
-    this.onChange = this.onChange.bind(this);
     this.handleOnClickLogout = this.handleOnClickLogout.bind(this);
   }
 
   componentDidMount() {
     // ApiActions.getAuthToken();    
-  }
-
-  componentWillMount() {
-    AuthStore.addChangeListener(this.onChange);
-    SecuritiesStore.addChangeListener(this.onChange);
-  }
-
-  componentWillUnmount() {
-    AuthStore.removeChangeListener(this.onChange);
-    SecuritiesStore.removeChangeListener(this.onChange);
-  }
-
-  onChange() {
-    this.setState(
-      Object.assign({}, AuthStore.getAuthStore(), SecuritiesStore.getSecuritiesStore())
-    );
   }
 
   handleOnClickLogout(event) {
@@ -60,7 +41,7 @@ class App extends Component {
 
   render() {
     const { authStore, securitiesStore } = this.state;
-    const { loggedIn } = auth;
+    const { loggedIn } = authStore;
     const { securities } = securitiesStore;
 
     return (
