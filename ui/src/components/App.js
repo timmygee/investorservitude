@@ -6,10 +6,9 @@ import LoginForm from './LoginForm';
 import AuthStore from '../store/AuthStore';
 import SecuritiesStore from '../store/SecuritiesStore';
 import ApiActions from '../actions/ApiActions';
-import { fluxContainer } from '/src/util/decorators';
+import { Container } from 'flux/utils';
 
 
-@fluxContainer
 class App extends Component {
   static getStores() {
     return [
@@ -83,4 +82,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Container.create(App);
