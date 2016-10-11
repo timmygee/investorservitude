@@ -27,6 +27,11 @@ class SecuritiesStore extends ReduceStore {
         return state;
     }
   }
+
+  getSecurities() {
+    const state = this.getState();
+    return state.get('securities');
+  }
 }
 
 export default new SecuritiesStore(Dispatcher);

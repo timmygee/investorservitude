@@ -48,6 +48,16 @@ class AuthStore extends ReduceStore {
         return state;
     }
   }
+
+  getLoggedInStatus() {
+    const state = this.getState();
+    return state.get('loggedIn');
+  }
+
+  getError() {
+    const state = this.getState();
+    return state.get('error');
+  }
 }
 
 export default new AuthStore(Dispatcher);

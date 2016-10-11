@@ -21,11 +21,11 @@ const style = {
 };
 
 class Charts extends Component {
-  // componentDidMount() {
-  //   // filter does nothing currently but here as a placeholder for a possible future feature 
-  //   const filter = {};
-  //   ApiActions.getSecurities({ filter });
-  // }
+  componentDidMount() {
+    // filter does nothing currently but here as a placeholder for a possible future feature 
+    const filter = {};
+    ApiActions.getSecurities({ filter });
+  }
 
   render() {
     const { securities } = this.props;

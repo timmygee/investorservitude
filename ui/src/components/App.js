@@ -19,8 +19,8 @@ class App extends Component {
 
   static calculateState() {
     return {
-      authStore: AuthStore.getState(),
-      securitiesStore: SecuritiesStore.getState(),
+      auth: AuthStore.getState().toObject(),
+      securities: SecuritiesStore.getSecurities(),
     };
   }
 
@@ -40,9 +40,8 @@ class App extends Component {
   }
 
   render() {
-    const { authStore, securitiesStore } = this.state;
-    const { loggedIn } = authStore;
-    const { securities } = securitiesStore;
+    const { auth, securities } = this.state;
+    const { loggedIn } = auth;
 
     return (
       <div>
@@ -55,7 +54,7 @@ class App extends Component {
           { 
             loggedIn ?
               <Charts securities={securities} /> :
-              <LoginForm authStore={authStore} />
+              <LoginForm {...auth} />
           }
         </div>
       </div>
