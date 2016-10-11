@@ -1,70 +1,53 @@
-import { EventEmitter } from 'events';
+import { ReduceStore } from 'flux/utils';
+import { Map } from 'immutable';
 
-import dispatcher from '../dispatcher/dispatcher';
+import Dispatcher from '../dispatcher/dispatcher';
 import { ACTION_TYPES } from '../constants/constants';
 import { login, logout } from '../util/auth';
 
 
-const CHANGE_EVENT = 'change';
-
-const authStore = {
-  error: null,
-  loggedIn: false,
-};
-
-class AuthStore extends EventEmitter {
-  emitChange() {
-    this.emit(CHANGE_EVENT);
-  }
-  addChangeListener(callback) {
-    this.on(CHANGE_EVENT, callback);
-  }
-  removeChangeListener(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
-  }
-  getAuthStore() {
-    return authStore;
-  }
-}
-
-const handleAuthTokenResponse = payload => {
-  const { restApi, token } = payload;
+const handleAuthTokenResponse = (state, action) => {
+  const { restApi, token } = action;
   console.log('handleAuthTokenResponse', restApi, token)
   restApi.setAuthToken(token);
   login(token);
-  authStore.loggedIn = true;
-  authStore.error = null;
+  return state.withMutations(map => map.set('loggedIn', true).set('error', null));
 }
 
-const handleLogout = () => {
+const handleLogout = (state) => {
   logout();
-  authStore.loggedIn = false;
+  return state.set('loggedIn', false);
 }
 
-const authStoreInstance = new AuthStore();
+const setError = (state, action) => {
+  const { error } = action;
+  return state.set('error', error);
+}
 
-authStoreInstance.dispatchToken = dispatcher.register(payload => {
-  const { actionType } = payload;
-
-  switch (actionType) {
-    case ACTION_TYPES.AUTH_FETCH_TOKEN_RESPONSE:
-      handleAuthTokenResponse(payload);
-      break;
-    case ACTION_TYPES.AUTH_FETCH_TOKEN_RESPONSE_LOCAL:
-      handleAuthTokenResponse(payload);
-      break;
-    case ACTION_TYPES.AUTH_LOGOUT:
-      logout();
-      break;
-    case ACTION_TYPES.API_ERROR:
-      const { error } = payload;
-      authStore.error = error;
-      break;
-    default:
-      return;
+class AuthStore extends ReduceStore {
+  getInitialState() {
+    return Map({
+      error: null,
+      loggedIn: false,
+    });
   }
 
-  authStoreInstance.emitChange();
-});
+  reduce(state, action) {
+    const { actionType } = action;
 
-export default authStoreInstance;
+    switch (actionType) {
+      case ACTION_TYPES.AUTH_FETCH_TOKEN_RESPONSE:
+        return handleAuthTokenResponse(state, action);
+      case ACTION_TYPES.AUTH_FETCH_TOKEN_RESPONSE_LOCAL:
+        return handleAuthTokenResponse(state, action);
+      case ACTION_TYPES.AUTH_LOGOUT:
+        return handleLogout(state);
+      case ACTION_TYPES.API_ERROR:
+        return setError(state, action)
+      default:
+        return state;
+    }
+  }
+}
+
+export default new AuthStore(Dispatcher);
