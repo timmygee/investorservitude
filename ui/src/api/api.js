@@ -1,8 +1,8 @@
 // import { fromByteArray } from 'base64-js';
 
 export default class API {
-  constructor(host='localhost:8000', baseEndpointPath='/api') {
-    this.baseEndpoint = `http://${host}${this.normalisePath(baseEndpointPath)}`;
+  constructor(host=window.location.host, baseEndpointPath='/api') {
+    this.baseEndpoint = `${window.location.protocol}//${host}${this.normalisePath(baseEndpointPath)}`;
     this.host = host;
     this.authToken = null;
   }
