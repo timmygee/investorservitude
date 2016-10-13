@@ -163,10 +163,6 @@ class BaseSettings:
     def INVESTORSERVE_PASSWORD(self):
         return 'set-this-in-environment'
 
-    @cbs.env
-    def PRODUCTION_HOST(self):
-        return 'set-this-in-environment'
-
 
 class LocalSettings(BaseSettings):
     DEBUG = True
@@ -179,7 +175,11 @@ class LocalSettings(BaseSettings):
 
 
 class ProductionSettings(BaseSettings):
-    ALLOWED_HOSTS = [super().PRODUCTION_HOST]
+    @cbs.env
+    def PRODUCTION_HOST(self):
+        return 'set-this-in-environment'
+
+    ALLOWED_HOSTS = [PRODUCTION_HOST]
 
 
 # Invoke the settings using the DJANGO_MODE environment variable
