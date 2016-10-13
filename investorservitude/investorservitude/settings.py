@@ -177,9 +177,11 @@ class LocalSettings(BaseSettings):
 class ProductionSettings(BaseSettings):
     @cbs.env
     def PRODUCTION_HOST(self):
-        return 'set-this-in-environment'
+        raise AttributeError('Please set env var {}PRODUCTION_HOST'.format(cbs.DEFAULT_ENV_PREFIX))
 
-    ALLOWED_HOSTS = [PRODUCTION_HOST]
+    @property
+    def ALLOWED_HOSTS(self):
+        return [self.PRODUCTION_HOST]
 
 
 # Invoke the settings using the DJANGO_MODE environment variable
